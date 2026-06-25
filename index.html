@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 10: Got It? - Class 1</title>
+    <style>
+        :root {
+            /* Color Palette */
+            --slate-900: #0f172a;
+            --slate-800: #1e293b;
+            --slate-700: #334155;
+            --slate-600: #475569;
+            --slate-200: #e2e8f0;
+            --slate-100: #f1f5f9;
+            --slate-50: #f8fafc;
+            
+            --blue-600: #2563eb;
+            --blue-500: #3b82f6;
+            --blue-100: #dbeafe;
+            
+            --emerald-600: #059669;
+            --emerald-500: #10b981;
+            --emerald-400: #34d399;
+            --emerald-100: #d1fae5;
+            
+            --amber-500: #f59e0b;
+            --amber-400: #fbbf24;
+            --amber-100: #fef3c7;
+
+            --coral-600: #e11d48;
+            --coral-500: #f43f5e;
+            --coral-100: #ffe4e6;
+
+            --purple-600: #7c3aed;
+            --purple-500: #8b5cf6;
+            --purple-100: #ede9fe;
+            
+            --text-main: #334155;
+            --text-light: #64748b;
+            
+            /* Spacing & Borders */
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            
+            /* Typography */
+            --font-main: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--slate-100);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--slate-900), var(--purple-600));
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            border-bottom: 5px solid var(--amber-400);
+        }
+
+        .header-title h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+        
+        .header-title .badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.5);
+            padding: 0.25rem 1rem;
+            border-radius: 99px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .header-info-container {
+            max-width: 900px;
+            margin: 2rem auto 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            text-align: left;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1.5rem;
+            border-radius: var(--radius-md);
+        }
+
+        .info-card h3 {
+            color: var(--amber-400);
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-card ul {
+            list-style: none;
+            color: var(--slate-50);
+            font-size: 0.95rem;
+        }
+        .info-card li { margin-bottom: 0.5rem; }
+        .info-card li::before {
+            content: "•";
+            color: var(--amber-400);
+            margin-right: 0.5rem;
+            font-weight: bold;
+        }
+
+        .tab-nav-container {
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .tab-nav {
+            display: flex;
+            gap: 0.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .tab-btn {
+            background: var(--slate-100);
+            border: 1px solid var(--slate-200);
+            padding: 0.75rem 1.25rem;
+            border-radius: var(--radius-md);
+            font-family: inherit;
+            font-weight: 600;
+            color: var(--slate-600);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.95rem;
+        }
+
+        .tab-btn:hover { background: var(--slate-200); }
+        .tab-btn.active {
+            background: var(--purple-600);
+            color: white;
+            border-color: var(--purple-600);
+            box-shadow: var(--shadow-md);
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .tab-content.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+        }
+        
+        .section-title {
+            color: var(--slate-900);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--slate-100);
+        }
+
+        .book-ref {
+            display: flex;
+            flex-direction: column;
+            border-left: 4px solid var(--purple-500);
+            background: var(--purple-100);
+            padding: 1.5rem;
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            margin-bottom: 2rem;
+        }
+
+        .book-badge {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: var(--purple-600);
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.05em;
+        }
+
+        .bridging-context {
+            margin-top: 0.5rem;
+            font-size: 0.95rem;
+            color: var(--slate-800);
+        }
+
+        .btn-primary {
+            background: var(--blue-600);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        .btn-primary:hover { background: var(--blue-500); }
+
+        .btn-secondary {
+            background: var(--slate-200);
+            color: var(--slate-800);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-secondary:hover { background: var(--slate-300); }
+
+        .btn-action {
+            background: var(--amber-500);
+            color: var(--slate-900);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: var(--radius-md);
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.1s, background 0.2s;
+            box-shadow: var(--shadow-md);
+        }
+        .btn-action:active { transform: scale(0.98); }
+        .btn-action:hover { background: var(--amber-400); }
+
+        .feedback-banner {
+            padding: 1rem;
+            border-radius: var(--radius-sm);
+            margin-top: 1rem;
+            font-weight: 600;
+            display: none;
+            animation: fadeIn 0.3s;
+        }
+        .feedback-banner.success { display: block; background: var(--emerald-100); color: var(--emerald-600); border: 1px solid var(--emerald-500); }
+        .feedback-banner.error { display: block; background: var(--coral-100); color: var(--coral-600); border: 1px solid var(--coral-600); }
+
+        .quiz-grid { display: grid; gap: 1rem; }
+        .quiz-item { 
+            display: grid; 
+            grid-template-columns: auto 1fr auto; 
+            align-items: center; 
+            gap: 1rem; 
+            background: var(--slate-50); 
+            padding: 1rem; 
+            border-radius: var(--radius-sm); 
+            border: 1px solid var(--slate-200); 
+        }
+        .quiz-item select, .quiz-item input { 
+            padding: 0.5rem; 
+            border: 1px solid var(--slate-300); 
+            border-radius: var(--radius-sm); 
+            font-family: inherit; 
+        }
+
+        .ai-thinker {
+            background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+            border: 1px solid #c7d2fe;
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .ai-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            color: #4f46e5;
+            cursor: pointer;
+            user-select: none;
+        }
+        .ai-content {
+            display: none;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #c7d2fe;
+            color: var(--slate-700);
+        }
+        .ai-content.show { display: block; }
+
+        /* Slot Machine Styles */
+        .slot-machine-container {
+            background: var(--slate-900);
+            padding: 3rem;
+            border-radius: var(--radius-lg);
+            text-align: center;
+            border: 6px solid var(--amber-500);
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8), var(--shadow-lg);
+            margin-bottom: 2rem;
+        }
+        .slot-display {
+            background: white;
+            margin: 0 auto 2rem auto;
+            max-width: 500px;
+            height: 100px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--purple-600);
+            box-shadow: inset 0 4px 10px rgba(0,0,0,0.2);
+            overflow: hidden;
+            border: 4px solid var(--slate-300);
+        }
+        .slot-text {
+            transition: transform 0.1s;
+        }
+
+        /* Grammar Guide Styles */
+        .tabloid-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .tabloid-card {
+            background: #fffbeb;
+            border: 2px solid #fde68a;
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            position: relative;
+        }
+        .quote-bubble {
+            background: white;
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--slate-200);
+            margin-bottom: 1rem;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        .reporter-note {
+            background: var(--slate-800);
+            color: white;
+            padding: 1rem;
+            border-radius: var(--radius-sm);
+            font-family: monospace;
+            font-size: 1.05rem;
+        }
+        .highlight { color: var(--amber-400); font-weight: bold; }
+
+        .grammar-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
+            background: white;
+        }
+        .grammar-table th, .grammar-table td {
+            border: 1px solid var(--slate-300);
+            padding: 1rem;
+            text-align: left;
+        }
+        .grammar-table th { background: var(--purple-100); color: var(--purple-900); }
+        .grammar-table td.arrow { text-align: center; font-weight: bold; color: var(--slate-400); }
+
+        /* Rubric Styles */
+        .rubric-table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        .rubric-table th, .rubric-table td { border: 1px solid var(--slate-300); padding: 0.75rem; text-align: left; }
+        .rubric-table th { background: var(--slate-100); }
+        .rubric-input { width: 60px; padding: 0.5rem; border: 1px solid var(--slate-300); border-radius: var(--radius-sm); }
+        
+        /* Reading details style */
+        details {
+            background: var(--slate-50);
+            border: 1px solid var(--slate-200);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            margin-bottom: 2rem;
+        }
+        summary {
+            font-weight: 600;
+            color: var(--blue-600);
+            cursor: pointer;
+            padding: 0.5rem 0;
+            outline: none;
+            font-size: 1.1rem;
+        }
+        summary:hover { color: var(--blue-800); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <div class="header-title">
+                <span class="badge">Level: Pre-Independent 4 (B1+)</span>
+                <h1>Got It? Talent & Creativity</h1>
+                <p>Class 1 — Unit 10</p>
+            </div>
+            <div class="header-info-container">
+                <div class="info-card">
+                    <h3>📋 Agenda</h3>
+                    <ul>
+                        <li>Warm-Up: The Skill Slot Machine</li>
+                        <li>Reading: Fact vs. Opinion</li>
+                        <li>Vocabulary: The Research Lab</li>
+                        <li>Grammar: Reported Speech (Statements)</li>
+                        <li>Project Launch: The Masterclass</li>
+                    </ul>
+                </div>
+                <div class="info-card">
+                    <h3>🎯 Objectives</h3>
+                    <ul>
+                        <li>Discuss talents and making money</li>
+                        <li>Differentiate facts from opinions in texts</li>
+                        <li>Master science & ability vocabulary</li>
+                        <li>Backshift tenses in Reported Speech</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="tab-nav-container">
+        <nav class="tab-nav">
+            <button class="tab-btn active" onclick="switchTab('tab1')">1. Warm Up</button>
+            <button class="tab-btn" onclick="switchTab('tab2')">2. Reading</button>
+            <button class="tab-btn" onclick="switchTab('tab3')">3. Vocabulary</button>
+            <button class="tab-btn" onclick="switchTab('tab4')">4. Grammar</button>
+            <button class="tab-btn" onclick="switchTab('tab5')">5. Speaking</button>
+            <button class="tab-btn" onclick="switchTab('tab6')" style="background: var(--amber-100); color: var(--amber-800); font-weight: bold; border-color: var(--amber-400);">6. Project Launch</button>
+        </nav>
+    </div>
+
+    <main>
+        <section id="tab1" class="tab-content active">
+            <div class="card">
+                <div class="book-ref">
+                    <span class="book-badge">📘 Class Activation (Page 113)</span>
+                    <div class="bridging-context">
+                        Your book asks you to list things you are good at and discuss whether natural talent or hard work is more important. Let's make it fun: We will generate random, highly unusual talents. You must instantly react to the prompt below!
+                    </div>
+                </div>
+
+                <h2 class="section-title">The Skill Slot Machine</h2>
+                
+                <div class="slot-machine-container">
+                    <div class="slot-display">
+                        <div class="slot-text" id="slotOutput">PULL THE LEVER!</div>
+                    </div>
+                    <button class="btn-action" onclick="spinSlotMachine()">🎰 Generate a Talent</button>
+                </div>
+
+                <div style="background: var(--blue-50); border: 1px solid var(--blue-200); padding: 2rem; border-radius: var(--radius-md); text-align: center;">
+                    <h3 style="color: var(--blue-800); margin-bottom: 1rem;">🗣️ Instant Speaking Prompt:</h3>
+                    <p style="font-size: 1.25rem; font-weight: 600; color: var(--slate-900);">
+                        "If you suddenly woke up with this talent, would you use it to express your creativity, or to make a lot of money? Why?"
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab2" class="tab-content">
+            <div class="card">
+                <div class="book-ref">
+                    <span class="book-badge">📘 Reading Skill: Fact or Opinion (Page 114)</span>
+                    <div class="bridging-context">
+                        The book asks you to identify 6 facts and opinions from the "Ask an Expert" text. We have included the full text below. Read it, and then use our digital scanner to evaluate 10 expanded quotes from the text.
+                    </div>
+                </div>
+
+                <h2 class="section-title">The Fact vs. Opinion Scanner</h2>
+                
+                <details>
+                    <summary>📄 Click to Read: "Ask an Expert" by Prof. Anna Felix</summary>
+                    <div style="margin-top: 1rem; line-height: 1.8; color: var(--slate-800);">
+                        <p><strong>Q: Is talent genetic, or is it just practice?</strong></p>
+                        <p>A: This is a debate that has lasted for centuries. Personally, I believe that hard work is far more important than genetics. Some researchers claim that "geniuses are born, not made," but I disagree.</p>
+                        <p>Let's look at the data. A famous study by Dr. K. Anders Ericsson investigated violinists at a music academy. The research showed that the best violinists had practiced for over 10,000 hours by age 20. The average students had only practiced for 4,000 hours. This proves that practice is essential.</p>
+                        <p>However, recent DNA studies on identical twins show that genetics do play a role in physical abilities like lung capacity and muscle type. Therefore, you might inherit the potential to be a great runner, but you won't win a gold medal without training.</p>
+                        <p>In my opinion, we rely too much on the excuse of "I'm not talented." Anyone can achieve greatness if they put in the hours.</p>
+                    </div>
+                </details>
+
+                <p style="margin-bottom: 1.5rem;">Read the statements below pulled from the text (and related ideas). Determine if they represent a proven <strong>Fact</strong> (data, studies) or the author's <strong>Opinion</strong> (beliefs, assumptions).</p>
+
+                <div class="quiz-grid" id="reading-quiz">
+                    <!-- Populated by JS -->
+                </div>
+                <button class="btn-primary" onclick="checkReading()">Scan Document</button>
+                <div id="reading-feedback" class="feedback-banner"></div>
+            </div>
+        </section>
+
+        <section id="tab3" class="tab-content">
+            <div class="card">
+                <div class="book-ref">
+                    <span class="book-badge">📘 Vocabulary: Science & Abilities (Page 114)</span>
+                    <div class="bridging-context">
+                        Your book introduces 9 target words. To truly understand the nature vs. nurture debate, we have expanded this list to 15 essential academic terms. Act as a Research Assistant and match the definitions.
+                    </div>
+                </div>
+
+                <h2 class="section-title">The Research Lab Dictionary</h2>
+                <div class="quiz-grid" id="vocab-quiz" style="margin-top: 1rem;">
+                    <!-- Populated by JS -->
+                </div>
+                <button class="btn-primary" onclick="checkVocab()">Submit Research</button>
+                <div id="vocab-feedback" class="feedback-banner"></div>
+            </div>
+        </section>
+
+        <section id="tab4" class="tab-content">
+            <div class="card">
+                <div class="book-ref">
+                    <span class="book-badge">📘 Grammar: Reported Speech - Statements (Page 115)</span>
+                    <div class="bridging-context">
+                        When we repeat what someone else said, we usually shift the verb tense "one step back in time" (e.g., Present becomes Past). Before doing the book exercises, review the Tabloid Reporter's notes to see this in action, then complete our 15-item digital clinic.
+                    </div>
+                </div>
+
+                <h2 class="section-title">Inductive Discovery: The Tabloid Reporter</h2>
+                <p style="margin-bottom: 1.5rem;">Notice how the reporter changes the celebrity's exact words when writing the news article.</p>
+
+                <div class="tabloid-grid">
+                    <div class="tabloid-card">
+                        <div class="quote-bubble">⭐ "I <span style="color:var(--blue-600)">am</span> very happy today."</div>
+                        <div class="reporter-note">She told me that she <span class="highlight">was</span> very happy that day. 📰</div>
+                    </div>
+                    <div class="tabloid-card">
+                        <div class="quote-bubble">⭐ "We <span style="color:var(--blue-600)">are learning</span> to surf."</div>
+                        <div class="reporter-note">They said that they <span class="highlight">were learning</span> to surf. 📰</div>
+                    </div>
+                    <div class="tabloid-card">
+                        <div class="quote-bubble">⭐ "I <span style="color:var(--blue-600)">will start</span> a new movie."</div>
+                        <div class="reporter-note">He mentioned that he <span class="highlight">would start</span> a new movie. 📰</div>
+                    </div>
+                    <div class="tabloid-card">
+                        <div class="quote-bubble">⭐ "I <span style="color:var(--blue-600)">can play</span> the guitar."</div>
+                        <div class="reporter-note">She said that she <span class="highlight">could play</span> the guitar. 📰</div>
+                    </div>
+                </div>
+
+                <h3 style="margin-bottom: 1rem;">Grammar Guide: The Backshift Rule</h3>
+                <table class="grammar-table">
+                    <tr>
+                        <th>Direct Speech (The Quote)</th>
+                        <th></th>
+                        <th>Reported Speech (The Article)</th>
+                    </tr>
+                    <tr><td>Present Simple <em>(I play)</em></td><td class="arrow">➔</td><td>Past Simple <em>(He played)</em></td></tr>
+                    <tr><td>Present Continuous <em>(I am playing)</em></td><td class="arrow">➔</td><td>Past Continuous <em>(He was playing)</em></td></tr>
+                    <tr><td>Will <em>(I will play)</em></td><td class="arrow">➔</td><td>Would <em>(He would play)</em></td></tr>
+                    <tr><td>Can <em>(I can play)</em></td><td class="arrow">➔</td><td>Could <em>(He could play)</em></td></tr>
+                </table>
+
+                <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--slate-200);">
+
+                <h2 class="section-title">Grammar Clinic (15 Items)</h2>
+                <p style="margin-bottom: 1rem;">Select the correct backshifted verb to complete the reported statements.</p>
+                
+                <div class="quiz-grid" id="grammar-quiz" style="grid-template-columns: 1fr 1fr;">
+                    <!-- Populated by JS -->
+                </div>
+                <button class="btn-primary" onclick="checkGrammar()">Check Grammar</button>
+                <div id="grammar-feedback" class="feedback-banner"></div>
+
+                <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--slate-200);">
+
+                <h2 class="section-title">Productive Bridge</h2>
+                <p>You are the reporter! Rewrite these direct quotes into Reported Speech. Start with <em>"She said that..."</em> or <em>"He told me that..."</em></p>
+                
+                <div style="background: var(--slate-50); padding: 1.5rem; border: 1px solid var(--slate-200); border-radius: var(--radius-md); margin-top: 1rem;">
+                    <strong style="color: var(--blue-600);">Quote 1:</strong> "I practice the piano every day." (said Maria)
+                    <textarea style="width: 100%; padding: 0.75rem; margin: 0.5rem 0 1.5rem 0; font-family: inherit; border-radius: var(--radius-sm); border: 1px solid var(--slate-300);" placeholder="Maria said that..."></textarea>
+                    
+                    <strong style="color: var(--blue-600);">Quote 2:</strong> "I will learn to speak Japanese." (said Tom)
+                    <textarea style="width: 100%; padding: 0.75rem; margin: 0.5rem 0 0 0; font-family: inherit; border-radius: var(--radius-sm); border: 1px solid var(--slate-300);" placeholder="Tom told me that..."></textarea>
+                </div>
+
+                <div class="ai-thinker">
+                    <div class="ai-header" onclick="toggleAI('ai_grammar')">
+                        🤖 AI Co-Thinker: Check Answers
+                    </div>
+                    <div id="ai_grammar" class="ai-content">
+                        1. Maria said that she <strong>practiced</strong> the piano every day.<br>
+                        2. Tom told me that he <strong>would learn</strong> to speak Japanese.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab5" class="tab-content">
+            <div class="card">
+                <div class="book-ref">
+                    <span class="book-badge">📘 Speaking: Discussing Skills (Page 115)</span>
+                    <div class="bridging-context">
+                        Let's put the grammar into action. You will interview a partner about a skill they have learned. Then comes the twist!
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+                    <div>
+                        <h2 class="section-title">The Talent Scout Interview</h2>
+                        <ol style="margin-left: 1.5rem; color: var(--slate-800); margin-bottom: 1.5rem;">
+                            <li style="margin-bottom: 0.5rem;"><strong>Interview (3 mins):</strong> Ask Partner A about a real skill they learned (e.g., cooking, driving, a language).</li>
+                            <li style="margin-bottom: 0.5rem;"><strong>The Twist:</strong> Switch partners (Find Partner B).</li>
+                            <li><strong>Report (2 mins):</strong> Tell Partner B everything Partner A said using Reported Speech!</li>
+                        </ol>
+
+                        <div style="background: #fffbeb; border-left: 4px solid var(--amber-500); padding: 1.5rem; border-radius: 0 var(--radius-md) var(--radius-md) 0;">
+                            <h4 style="color: var(--amber-700); margin-bottom: 0.5rem;">🗣️ Confident Communicator</h4>
+                            <ul style="font-size: 0.95rem; padding-left: 1rem; color: var(--slate-800);">
+                                <li>"It took a lot of hard work, but..."</li>
+                                <li>"To be honest, it didn't come naturally to me."</li>
+                                <li>"I practice every day, so..."</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h2 class="section-title">Interactive Grading Rubric</h2>
+                        <p>Evaluator: Score the student on their final "Reporting" phase.</p>
+                        <input type="text" id="studentName" placeholder="Student Name" style="width: 100%; padding: 0.75rem; margin-bottom: 1rem; border: 1px solid var(--slate-300); border-radius: var(--radius-sm);">
+                        
+                        <table class="rubric-table">
+                            <tr>
+                                <th>Criteria (1-5)</th>
+                                <th>Score</th>
+                            </tr>
+                            <tr>
+                                <td><strong>Grammar:</strong> Accurate backshifting (Reported Speech)</td>
+                                <td><input type="number" id="scoreGrammar" class="rubric-input" min="1" max="5" value="5"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Vocab:</strong> Uses talent/practice terminology</td>
+                                <td><input type="number" id="scoreVocab" class="rubric-input" min="1" max="5" value="5"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Fluency:</strong> Speaks confidently without long pauses</td>
+                                <td><input type="number" id="scoreFluency" class="rubric-input" min="1" max="5" value="5"></td>
+                            </tr>
+                        </table>
+                        <button class="btn-secondary" onclick="generateReport()">Generate Feedback</button>
+                        <div id="rubric-report" style="margin-top: 1rem; padding: 1rem; background: var(--slate-100); border-radius: var(--radius-sm); font-size: 0.875rem; display: none;"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab6" class="tab-content">
+            <div class="card" style="background: linear-gradient(135deg, var(--slate-900), var(--slate-800)); color: white; border-top: 8px solid var(--amber-400);">
+                <div style="text-align: center; padding: 2rem 0;">
+                    <span style="background: var(--amber-500); color: var(--slate-900); padding: 0.25rem 0.75rem; border-radius: 99px; font-weight: bold; font-size: 0.875rem; text-transform: uppercase;">Unit 10 Project Launch</span>
+                    <h2 style="font-size: 2.5rem; margin: 1rem 0; color: white;">🎙️ The Masterclass Podcast</h2>
+                    <p style="font-size: 1.1rem; max-width: 800px; margin: 0 auto; color: var(--slate-300);">
+                        Over the next 4 classes, you will build and perform a 3-minute "Masterclass" audio pitch where you teach the class a specific skill, concept, or talent.
+                    </p>
+                </div>
+                
+                <div style="background: white; color: var(--slate-900); padding: 2rem; border-radius: var(--radius-md); max-width: 800px; margin: 0 auto; box-shadow: var(--shadow-sm);">
+                    <h3 style="color: var(--purple-600); border-bottom: 2px solid var(--slate-100); padding-bottom: 0.5rem; margin-bottom: 1rem;">Task 1: The Brainstorm (Today)</h3>
+                    <p style="margin-bottom: 1.5rem;">To start the project, you need to decide what you will teach. Fill in the planning notes below.</p>
+                    
+                    <div style="background: var(--slate-50); padding: 1.5rem; border: 1px solid var(--slate-200); border-radius: var(--radius-sm);">
+                        <strong style="display: block; margin-bottom: 0.5rem;">1. My Masterclass Topic:</strong>
+                        <input type="text" placeholder="e.g., How to memorize a deck of cards, How to make perfect pasta..." style="width: 100%; padding: 0.75rem; margin-bottom: 1.5rem; border: 1px solid var(--slate-300); border-radius: var(--radius-sm);">
+                        
+                        <strong style="display: block; margin-bottom: 0.5rem;">2. My Expert Persona (Who are you?):</strong>
+                        <input type="text" placeholder="e.g., World Memory Champion, Italian Chef..." style="width: 100%; padding: 0.75rem; margin-bottom: 1.5rem; border: 1px solid var(--slate-300); border-radius: var(--radius-sm);">
+
+                        <strong style="display: block; margin-bottom: 0.5rem;">3. Three Direct Statements:</strong>
+                        <p style="font-size: 0.85rem; color: var(--slate-600); margin-bottom: 0.5rem;">Write 3 things you will definitely say during your podcast. (Note: Your classmates will use Reported Speech to talk about these statements in Class 3!)</p>
+                        <input type="text" placeholder='1. "I practice this skill every single morning."' style="width: 100%; padding: 0.75rem; margin-bottom: 0.5rem; border: 1px solid var(--slate-300); border-radius: var(--radius-sm);">
+                        <input type="text" placeholder='2. "Anyone can learn this if they have patience."' style="width: 100%; padding: 0.75rem; margin-bottom: 0.5rem; border: 1px solid var(--slate-300); border-radius: var(--radius-sm);">
+                        <input type="text" placeholder='3. "I will teach you my secret technique."' style="width: 100%; padding: 0.75rem; border: 1px solid var(--slate-300); border-radius: var(--radius-sm);">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // === Tab Navigation ===
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // === AI Toggle ===
+        function toggleAI(id) {
+            document.getElementById(id).classList.toggle('show');
+        }
+
+        // === Slot Machine Logic ===
+        const talents = [
+            "Speed-Reading", "Beatboxing", "Extreme Origami", "Dog Whispering",
+            "Juggling Chainsaws", "Lockpicking", "Yodeling", "Ice Sculpting",
+            "Writing backwards", "Speaking to Birds", "Photographic Memory",
+            "Stand-up Comedy", "Card Counting", "Speed Cubing (Rubik's)"
+        ];
+
+        function spinSlotMachine() {
+            const display = document.getElementById('slotOutput');
+            let spins = 0;
+            const maxSpins = 15;
+            
+            // Rapidly change text to simulate spinning
+            const spinInterval = setInterval(() => {
+                const randomTalent = talents[Math.floor(Math.random() * talents.length)];
+                display.innerText = randomTalent;
+                display.style.transform = `translateY(${Math.random() * 10 - 5}px)`;
+                spins++;
+                
+                if (spins >= maxSpins) {
+                    clearInterval(spinInterval);
+                    display.style.transform = 'translateY(0)';
+                    // Final pick
+                    display.innerText = talents[Math.floor(Math.random() * talents.length)];
+                }
+            }, 50);
+        }
+
+        // === Reading Quiz Logic (10 Items) ===
+        const readingData = [
+            { q: "1. The best violinists practiced for over 10,000 hours by age 20.", a: "Fact" },
+            { q: "2. Hard work is far more important than genetics.", a: "Opinion" },
+            { q: "3. Anyone can achieve greatness if they put in the hours.", a: "Opinion" },
+            { q: "4. Genetics play a role in lung capacity and muscle type.", a: "Fact" },
+            { q: "5. We rely too much on the excuse of 'I'm not talented.'", a: "Opinion" },
+            { q: "6. Dr. Ericsson conducted a study on musicians at an academy.", a: "Fact" },
+            { q: "7. Average students had practiced for 4,000 hours.", a: "Fact" },
+            { q: "8. Geniuses are born, not made.", a: "Opinion" },
+            { q: "9. DNA studies were conducted on identical twins.", a: "Fact" },
+            { q: "10. You won't win a gold medal without training.", a: "Opinion" }
+        ];
+
+        const readingContainer = document.getElementById('reading-quiz');
+        readingData.forEach((item, index) => {
+            readingContainer.innerHTML += `
+                <div class="quiz-item" style="grid-template-columns: 1fr 200px;">
+                    <span>${item.q}</span>
+                    <select id="read-q${index}">
+                        <option value="">Select...</option>
+                        <option value="Fact">Fact</option>
+                        <option value="Opinion">Opinion</option>
+                    </select>
+                </div>
+            `;
+        });
+
+        function checkReading() {
+            let score = 0;
+            readingData.forEach((item, index) => {
+                const select = document.getElementById(`read-q${index}`);
+                if (select.value === item.a) {
+                    select.style.borderColor = "var(--emerald-500)";
+                    select.style.backgroundColor = "var(--emerald-100)";
+                    score++;
+                } else {
+                    select.style.borderColor = "var(--coral-600)";
+                    select.style.backgroundColor = "var(--coral-100)";
+                }
+            });
+            const feedback = document.getElementById('reading-feedback');
+            feedback.className = `feedback-banner ${score === 10 ? 'success' : 'error'}`;
+            feedback.innerHTML = `You correctly identified ${score}/10 statements. ${score === 10 ? 'Great critical reading!' : 'Review the text again.'}`;
+        }
+
+        // === Vocabulary Quiz Logic (15 Items) ===
+        const vocabWords = [
+            "assume", "potential", "memory", "talent", "identical twins", 
+            "theory", "genetic", "inherit", "genius", "DNA", 
+            "research", "ability", "expert", "investigate", "practice"
+        ].sort();
+
+        const vocabDefs = [
+            { d: "1. A natural skill or ability.", a: "talent" },
+            { d: "2. The physical and mental ability to do something.", a: "ability" },
+            { d: "3. To accept something as true without proof.", a: "assume" },
+            { d: "4. A person with an exceptionally high level of intelligence.", a: "genius" },
+            { d: "5. To receive a characteristic from your parents.", a: "inherit" },
+            { d: "6. Related to genes or heredity.", a: "genetic" },
+            { d: "7. The molecule that carries genetic instructions.", a: "DNA" },
+            { d: "8. Two siblings born at the same time who look exactly alike.", a: "identical twins" },
+            { d: "9. An idea used to explain a situation or scientific process.", a: "theory" },
+            { d: "10. The capacity to develop or succeed in the future.", a: "potential" },
+            { d: "11. The brain's ability to store and recall information.", a: "memory" },
+            { d: "12. Detailed study of a subject to discover new information.", a: "research" },
+            { d: "13. To examine a problem or crime carefully to find the truth.", a: "investigate" },
+            { d: "14. A person with deep knowledge in a particular area.", a: "expert" },
+            { d: "15. Doing an activity repeatedly to improve your skill.", a: "practice" }
+        ];
+
+        let selectOptions = `<option value="">Select term...</option>`;
+        vocabWords.forEach(w => selectOptions += `<option value="${w}">${w}</option>`);
+
+        const vocabContainer = document.getElementById('vocab-quiz');
+        vocabDefs.forEach((item, index) => {
+            vocabContainer.innerHTML += `
+                <div class="quiz-item" style="grid-template-columns: 1fr 200px;">
+                    <span>${item.d}</span>
+                    <select id="voc-q${index}">${selectOptions}</select>
+                </div>
+            `;
+        });
+
+        function checkVocab() {
+            let score = 0;
+            vocabDefs.forEach((item, index) => {
+                const select = document.getElementById(`voc-q${index}`);
+                if (select.value === item.a) {
+                    select.style.borderColor = "var(--emerald-500)";
+                    select.style.backgroundColor = "var(--emerald-100)";
+                    score++;
+                } else {
+                    select.style.borderColor = "var(--coral-600)";
+                    select.style.backgroundColor = "var(--coral-100)";
+                }
+            });
+            const feedback = document.getElementById('vocab-feedback');
+            feedback.className = `feedback-banner ${score === 15 ? 'success' : 'error'}`;
+            feedback.innerHTML = `You matched ${score}/15 terms. ${score === 15 ? 'Research complete!' : 'Check the incorrect terms.'}`;
+        }
+
+        // === Grammar Quiz Logic (15 Items) ===
+        const grammarData = [
+            { text: '1. "I play tennis." ➔ He said he [?] tennis.', a: "played", opts: ["plays", "played", "was playing"] },
+            { text: '2. "I am working." ➔ She told me she [?] working.', a: "was", opts: ["is", "was", "were"] },
+            { text: '3. "We will go to Paris." ➔ They said they [?] go to Paris.', a: "would", opts: ["will", "would", "went"] },
+            { text: '4. "I can swim fast." ➔ He mentioned he [?] swim fast.', a: "could", opts: ["can", "could", "would"] },
+            { text: '5. "It is raining." ➔ She said it [?] raining.', a: "was", opts: ["is", "was", "has"] },
+            { text: '6. "I don\'t like fish." ➔ He told me he [?] like fish.', a: "didn't", opts: ["doesn't", "didn't", "wasn't"] },
+            { text: '7. "We are studying." ➔ They said they [?] studying.', a: "were", opts: ["are", "was", "were"] },
+            { text: '8. "I will help you." ➔ She said she [?] help me.', a: "would", opts: ["will", "would", "could"] },
+            { text: '9. "I want a car." ➔ He said he [?] a car.', a: "wanted", opts: ["want", "wanted", "was wanting"] },
+            { text: '10. "I can\'t find my keys." ➔ She told me she [?] find her keys.', a: "couldn't", opts: ["can't", "couldn't", "wouldn't"] },
+            { text: '11. "They live in London." ➔ He said they [?] in London.', a: "lived", opts: ["live", "lived", "were living"] },
+            { text: '12. "I am not tired." ➔ She mentioned she [?] tired.', a: "wasn't", opts: ["isn't", "wasn't", "didn't"] },
+            { text: '13. "We will win." ➔ They told us they [?] win.', a: "would", opts: ["will", "would", "could"] },
+            { text: '14. "I have a cat." ➔ He said he [?] a cat.', a: "had", opts: ["have", "has", "had"] },
+            { text: '15. "I can speak French." ➔ She said she [?] speak French.', a: "could", opts: ["can", "could", "would"] }
+        ];
+
+        const grammarContainer = document.getElementById('grammar-quiz');
+        grammarData.forEach((item, index) => {
+            const parts = item.text.split('[?]');
+            let optsHTML = `<option value="">Select...</option>`;
+            item.opts.forEach(opt => optsHTML += `<option value="${opt}">${opt}</option>`);
+            
+            grammarContainer.innerHTML += `
+                <div style="background: white; padding: 0.75rem; border-radius: var(--radius-sm); border: 1px solid var(--slate-200);">
+                    ${parts[0]} <select id="gram-q${index}" style="font-weight: bold;">${optsHTML}</select> ${parts[1]}
+                </div>
+            `;
+        });
+
+        function checkGrammar() {
+            let score = 0;
+            grammarData.forEach((item, index) => {
+                const select = document.getElementById(`gram-q${index}`);
+                if (select.value === item.a) {
+                    select.style.borderColor = "var(--emerald-500)";
+                    select.style.backgroundColor = "var(--emerald-100)";
+                    score++;
+                } else {
+                    select.style.borderColor = "var(--coral-600)";
+                    select.style.backgroundColor = "var(--coral-100)";
+                }
+            });
+            const feedback = document.getElementById('grammar-feedback');
+            feedback.className = `feedback-banner ${score === 15 ? 'success' : 'error'}`;
+            feedback.innerHTML = `Score: ${score}/15. ${score === 15 ? 'Perfect Backshifting!' : 'Review the tense rules.'}`;
+        }
+
+        // === Rubric Logic ===
+        function generateReport() {
+            const name = document.getElementById('studentName').value || "The student";
+            const g = parseInt(document.getElementById('scoreGrammar').value);
+            const v = parseInt(document.getElementById('scoreVocab').value);
+            const f = parseInt(document.getElementById('scoreFluency').value);
+            const total = g + v + f;
+            const percentage = Math.round((total / 15) * 100);
+            
+            const reportDiv = document.getElementById('rubric-report');
+            reportDiv.style.display = "block";
+            
+            let comment = "";
+            if (percentage >= 90) comment = "Excellent reporting! You smoothly shifted tenses backwards and maintained great fluency.";
+            else if (percentage >= 70) comment = "Good effort. Pay a bit more attention to consistently backshifting the verbs (e.g., is -> was).";
+            else comment = "Review the Reported Speech rules on the Grammar tab to ensure accuracy before moving on.";
+
+            reportDiv.innerHTML = `
+                <strong>Feedback Report for ${name}:</strong><br>
+                Total Score: ${total}/15 (${percentage}%)<br><br>
+                <em>Evaluator Notes:</em> ${comment}
+            `;
+        }
+    </script>
+</body>
+</html>
